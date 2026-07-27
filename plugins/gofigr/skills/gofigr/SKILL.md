@@ -1,7 +1,7 @@
 ---
 name: gofigr
-description: Write code that publishes figures and data assets to GoFigr (gofigr.io) from Python or R, including Clean Room reproducible functions. Use when the user mentions GoFigr, gofigR, gfconfig, `%load_ext gofigr`, `@reproducible`, "clean room", or asks to publish/capture/version a plot, or to track a data file used by a figure.
-when_to_use: Triggers include "publish this figure to GoFigr", "add GoFigr to this notebook", "make this a clean room function", "track this CSV as an asset", "why isn't my figure showing up in GoFigr", and any edit to a file that already imports gofigr or gofigR.
+description: Publish figures and data assets to GoFigr (gofigr.io) from Python or R, including Clean Room reproducible functions. Use when GoFigr, gofigR, or clean room comes up, or when versioning a plot.
+when_to_use: Also triggers on `%load_ext gofigr`, `@reproducible`, "track this CSV as an asset", "why isn't my figure showing up in GoFigr", and any edit to a file that already imports gofigr or gofigR.
 ---
 
 # GoFigr
@@ -12,10 +12,10 @@ GoFigr versions figures with the code, data, and environment that produced them.
 
 | Situation | Read |
 |---|---|
-| Python — Jupyter, scripts, asset tracking | `${CLAUDE_SKILL_DIR}/references/python.md` |
-| R — RMarkdown, scripts, RStudio, asset tracking | `${CLAUDE_SKILL_DIR}/references/r.md` |
-| Python `@reproducible` / clean room | `${CLAUDE_SKILL_DIR}/references/cleanroom-python.md` |
-| R `reproducible()` / clean room | `${CLAUDE_SKILL_DIR}/references/cleanroom-r.md` |
+| Python — Jupyter, scripts, asset tracking | [references/python.md](references/python.md) |
+| R — RMarkdown, scripts, RStudio, asset tracking | [references/r.md](references/r.md) |
+| Python `@reproducible` / clean room | [references/cleanroom-python.md](references/cleanroom-python.md) |
+| R `reproducible()` / clean room | [references/cleanroom-r.md](references/cleanroom-r.md) |
 
 Read only the file(s) you need. Don't guess at API shapes — the two clients differ in ways that are easy to get wrong (R has no `publisher=` argument; Python has no `packages=` character vector).
 
@@ -26,6 +26,8 @@ Read only the file(s) you need. Don't guess at API shapes — the two clients di
 **R requires an explicit `publish()` call for every figure.** Automatic capture in R is being sunset — it is not reliable. See the R rule below.
 
 **Clean room degrades silently.** Both clients respond to unsupported parameter types, oversized data, or a missing dependency by emitting a *warning* and running the function normally, with no capture. A run that produced no error did not necessarily publish anything. After writing clean room code, tell the user to check for warnings, or verify the revision appeared in the web app.
+
+**Setup is per-session, not per-figure.** In an environment with a persistent kernel — Jupyter, or a workbench that keeps Python and R kernels alive across turns — `%load_ext gofigr` / `gofigR::enable()` runs once. Re-running `enable()` before every figure is wrong and re-reserves session state. But Python auto-capture only sees figures produced *after* the extension loads, so if plots already ran in a live kernel, they need an explicit `publish()` rather than a reload.
 
 **Don't invent figure names.** In both clients an unnamed figure is a problem: R publishes it as `"Anonymous Figure"` with a warning. Pass a real name, or use `auto_assign=TRUE`/`auto_assign=True` to let the server assign it by image content.
 
