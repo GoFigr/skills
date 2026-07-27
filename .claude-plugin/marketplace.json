@@ -1,0 +1,41 @@
+{
+  "name": "gofigr",
+  "description": "Skills for GoFigr.io — reproducible figure capture and Clean Room for Python and R.",
+  "owner": {
+    "name": "GoFigr",
+    "email": "support@gofigr.io",
+    "url": "https://gofigr.io"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "gofigr",
+      "source": "./gofigr",
+      "description": "Publish figures and data assets to GoFigr from Python and R, including Clean Room reproducible functions.",
+      "version": "0.1.0",
+      "author": {
+        "name": "GoFigr",
+        "email": "support@gofigr.io",
+        "url": "https://gofigr.io"
+      },
+      "homepage": "https://gofigr.io/docs",
+      "repository": "https://github.com/GoFigr/skills",
+      "license": "MIT",
+      "category": "data-science",
+      "keywords": [
+        "gofigr",
+        "figures",
+        "reproducibility",
+        "clean-room",
+        "jupyter",
+        "matplotlib",
+        "ggplot2",
+        "python",
+        "r",
+        "data-science"
+      ]
+    }
+  ]
+}

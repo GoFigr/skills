@@ -1,0 +1,20 @@
+{
+  "name": "gofigr",
+  "description": "Publish figures and data assets to GoFigr from Python and R, including Clean Room reproducible functions.",
+  "version": "0.1.0",
+  "author": {
+    "name": "GoFigr",
+    "email": "support@gofigr.io",
+    "url": "https://gofigr.io"
+  },
+  "homepage": "https://gofigr.io/docs",
+  "repository": "https://github.com/GoFigr/skills",
+  "license": "MIT",
+  "keywords": [
+    "gofigr",
+    "figures",
+    "reproducibility",
+    "clean-room",
+    "jupyter"
+  ]
+}
