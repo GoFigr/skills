@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GoFigr Assistant">
+  <circle cx="32" cy="32" r="30" fill="#1a7f6b"/>
+  <path d="M20 44 L20 30 M20 30 A12 12 0 1 1 44 30 L44 34" stroke="#ffffff" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <circle cx="44" cy="41" r="4.5" fill="#ffffff"/>
+</svg>
