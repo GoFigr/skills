@@ -35,7 +35,11 @@ reference files; those references are included inline right after the guide,
 as sections titled "Reference: <name>".
 """
 
-_AVATAR_FILENAME = "avatar.svg"
+# The GoFigr mark, copied verbatim from gofigr-python
+# (gofigr/resources/logo_small.png) -- the same logo the notebook widgets
+# show, so the chat avatar matches the rest of the product. Refresh this copy
+# if the brand mark changes.
+_AVATAR_FILENAME = "logo.png"
 
 
 @lru_cache(maxsize=1)
