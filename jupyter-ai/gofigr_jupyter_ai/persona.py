@@ -35,6 +35,45 @@ reference files; those references are included inline right after the guide,
 as sections titled "Reference: <name>".
 """
 
+# Behavioral rules, deliberately appended AFTER the reference material rather
+# than folded into the preamble above. ~29k characters of guide sit between the
+# preamble and the user's message, and these are the instructions that have to
+# survive that distance, so they go closest to the turn. They state defaults
+# that the references only imply.
+_BEHAVIOR_RULES = """
+# Default behavior in this environment
+
+These are defaults, not suggestions. Follow them unless the user says otherwise.
+
+1. **Every notebook you create starts with `%load_ext gofigr`.** Put it in the
+   very first cell, above the imports and above any plotting. Notebooks created
+   through the JupyterLab UI get this cell injected automatically, but the
+   `create_notebook` tool writes the file directly and bypasses that injection
+   -- so when *you* create a notebook, adding the cell is your job. Handing back
+   a notebook that plots without it means the user's figures are silently not
+   versioned, which is the worst failure mode in this product.
+
+2. **Order matters and is not retroactive.** The extension installs a display
+   hook when it loads and only captures figures produced afterwards. Putting
+   `%load_ext gofigr` below cells that already plotted does nothing for those
+   figures. If plotting already happened in a live kernel without the extension,
+   load it and then call `publish()` explicitly on the existing figures rather
+   than assuming a late load captured them.
+
+3. **`%load_ext gofigr` is the entire setup here.** These instances ship a
+   `~/.gofigr` config, so the extension auto-configures itself: default
+   workspace, an analysis named after the notebook, and `auto_publish=True`. Do
+   not add `configure()` boilerplate, credential prompts, or API keys unless the
+   user explicitly asks to override a specific default.
+
+4. **Leave auto-publishing on.** Do not set `auto_publish=False`, and do not
+   drop the load_ext cell when editing an existing notebook, even temporarily
+   while debugging.
+
+5. **Say it once.** After setting a notebook up, note in a single line that its
+   figures will be versioned to GoFigr. Do not narrate this per figure.
+"""
+
 # The GoFigr mark, copied verbatim from gofigr-python
 # (gofigr/resources/logo_small.png) -- the same logo the notebook widgets
 # show, so the chat avatar matches the rest of the product. Refresh this copy
@@ -54,6 +93,7 @@ def _gofigr_knowledge() -> str:
         else:
             parts.append(f"# Reference: {rel_path}")
         parts.append(text.strip())
+    parts.append(_BEHAVIOR_RULES.strip())
     parts.append("</gofigr_knowledge>")
     return "\n\n".join(parts)
 
