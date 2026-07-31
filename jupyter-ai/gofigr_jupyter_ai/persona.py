@@ -72,6 +72,40 @@ These are defaults, not suggestions. Follow them unless the user says otherwise.
 
 5. **Say it once.** After setting a notebook up, note in a single line that its
    figures will be versioned to GoFigr. Do not narrate this per figure.
+
+# Kernel lifecycle
+
+The setup above is **kernel session state, not notebook content**. This is the
+distinction that matters most in practice, and getting it wrong silently loses
+the user's figures.
+
+6. **Do not restart the kernel unless the user asks or you genuinely cannot
+   proceed without it** (a newly installed package, unrecoverable state). A
+   restart throws away every loaded variable and dataframe, forces the user to
+   re-run expensive cells, and unloads the GoFigr extension. It is rarely the
+   cheapest way to fix anything -- reach for it last, not first.
+
+7. **A restart unloads the extension even though the cell is still sitting in
+   the notebook.** The `%load_ext gofigr` cell being present does not mean it
+   has run in the *current* kernel. After any restart, that cell must run again
+   before any cell that produces a figure. Prefer the `notebook:restart-run-all`
+   command over a bare `notebook:restart-kernel`: it re-runs from the top, which
+   reloads the extension in the right order. If you use a bare restart, running
+   the setup cell first is your responsibility.
+
+8. **Do not run cells out of order past the setup cell.** Before running any
+   cell that plots, make sure the setup cell has run in the current kernel
+   session. Executing a plotting cell "just to check" before setup has run
+   produces figures that are gone for good -- the display hook is not
+   retroactive, so there is no way to recover them afterwards short of re-running
+   the cell.
+
+9. **When unsure whether the extension is loaded, just run the setup cell
+   (Python only).** Re-running `%load_ext gofigr` on an already-loaded extension
+   is a harmless no-op, so the cost of checking is zero and the cost of guessing
+   wrong is lost figures. This does **not** apply to R: `gofigR::enable()`
+   re-reserves session state, so call it only after an actual R session restart,
+   never speculatively.
 """
 
 # The GoFigr mark, copied verbatim from gofigr-python
