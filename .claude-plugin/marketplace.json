@@ -1,18 +1,15 @@
 {
   "name": "gofigr",
-  "description": "Skills for GoFigr.io — reproducible figure capture and Clean Room for Python and R.",
+  "description": "Skills for GoFigr.io \u2014 reproducible figure capture and Clean Room for Python and R.",
   "owner": {
     "name": "GoFigr",
     "email": "support@gofigr.io",
     "url": "https://gofigr.io"
   },
-  "metadata": {
-    "pluginRoot": "./plugins"
-  },
   "plugins": [
     {
       "name": "gofigr",
-      "source": "./gofigr",
+      "source": "./plugins/gofigr",
       "description": "Publish figures and data assets to GoFigr from Python and R, including Clean Room reproducible functions.",
       "version": "0.1.0",
       "author": {
