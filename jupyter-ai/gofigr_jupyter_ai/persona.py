@@ -7,6 +7,8 @@ system prompt. The knowledge is the Claude skill's SKILL.md + references,
 embedded as package data at build time (see pyproject.toml force-include) so
 the two stay single-sourced.
 """
+import asyncio
+import os
 from functools import lru_cache
 from importlib.resources import files
 from typing import Any
@@ -114,6 +116,16 @@ the user's figures.
 # if the brand mark changes.
 _AVATAR_FILENAME = "logo.png"
 
+# Canned first message, kept as a standalone markdown file so the copy can be
+# edited without touching code. Sent once into the AMI-seeded welcome chat
+# (below) the first time it loads with no messages in it.
+_WELCOME_FILENAME = "welcome.md"
+
+# Only this chat gets the welcome. The name must match the file the compute
+# AMI seeds at the notebooks root (see gofigr_server ami/files/boot.sh) --
+# chats the user creates themselves start clean.
+_WELCOME_CHAT_BASENAME = "GoFigr Assistant.chat"
+
 
 @lru_cache(maxsize=1)
 def _gofigr_knowledge() -> str:
@@ -143,6 +155,40 @@ def _strip_frontmatter(text: str) -> str:
 
 class GoFigrPersona(JupyternautPersona):
     """Jupyternaut + GoFigr domain knowledge."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Personas are instantiated when a chat ROOM loads (router
+        # chat-init), not when the first message arrives -- so this runs the
+        # moment the seeded chat opens in JupyterLab, before the user has
+        # typed anything. That makes it the hook for the one-time welcome.
+        self.event_loop.create_task(self._maybe_send_welcome())
+
+    async def _maybe_send_welcome(self) -> None:
+        """Post the canned welcome into the seeded chat on its first load.
+
+        Guards, in order: only the AMI-seeded chat (user-created chats start
+        clean), and only while the chat has no messages -- which also makes
+        this self-retrying: if a send fails, the chat is still empty on the
+        next load and we try again. The sleep + re-check narrows the race of
+        two clients opening the empty chat at once (rare on these single-user
+        instances) without blocking room init.
+        """
+        try:
+            basename = os.path.basename(self.get_chat_path())
+            if basename != _WELCOME_CHAT_BASENAME:
+                return
+            if self.ychat.get_messages():
+                return
+            await asyncio.sleep(2)
+            if self.ychat.get_messages():
+                return
+            welcome = (
+                files("gofigr_jupyter_ai") / _WELCOME_FILENAME
+            ).read_text(encoding="utf-8")
+            self.send_message(welcome.strip())
+        except Exception:  # noqa: BLE001 -- never break chat init
+            self.log.exception("Failed to send the GoFigr welcome message")
 
     @property
     def defaults(self) -> PersonaDefaults:

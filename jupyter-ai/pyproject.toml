@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gofigr-jupyter-ai"
-version = "0.1.0"
+version = "0.1.1"
 description = "GoFigr Assistant persona for jupyter-ai: Jupyternaut plus GoFigr domain knowledge"
 readme = "README.md"
 license = "MIT"
