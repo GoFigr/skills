@@ -1,11 +1,11 @@
 # Welcome to GoFigr! 👋
 
-I'm your AI assistant for exploratory data analysis and reproducible science. I can help you write code, build notebooks, and automatically version your figures with [GoFigr](https://app.gofigr.io).
+I'm your AI assistant for reproducible science. Every figure you make here can publish to [GoFigr](https://app.gofigr.io) automatically — together with the code, data, and environment that produced it — so your results stay versioned and traceable instead of scattered across `final_v2_REALLY_final.png` files.
 
-Here are a few analyses we could spin up right now:
+Three things to try:
 
-1. 🚢 **Titanic survival analysis** — Explore passenger data with survival breakdowns by class, age, and gender using seaborn & matplotlib
-2. 🌸 **Iris clustering** — Apply k-means clustering to the classic Iris dataset and visualize decision boundaries with scikit-learn
-3. 📈 **Stock price simulation** — Simulate and plot random-walk price series using numpy to explore volatility and trends
+1. 🧬 **Run the demo** — the TCGA lung-cancer notebook is already open in the next tab. Run it top to bottom, then open [app.gofigr.io](https://app.gofigr.io) and watch every figure appear in your account, each one traceable back to the exact code and data that made it. Curious about any cell? Ask me.
+2. 🔁 **Change something and re-run** — tweak the demo (swap the classifier, drop a gene, change a threshold — I can suggest a one-line edit) and re-run. GoFigr captures a **new revision** of each figure, and you can compare it against the original side by side.
+3. 📤 **Analyze your own data** — drag a CSV or parquet file into the file browser and tell me what you want to learn from it. I'll build the notebook, and every figure it produces will publish automatically.
 
-Just say the word (or suggest your own idea) and I'll build it out!
+Just say the word (or bring your own idea) and I'll build it out!
